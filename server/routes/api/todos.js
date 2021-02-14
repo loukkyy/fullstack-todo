@@ -25,9 +25,13 @@ router.delete("/:id", async (request, response) => {
   response.status(200).send("deleted")
 })
 
+const USERNAME = "user"
+const PASSWORD = "pass1234"
+const DB_NAME = "fullstack-todo-db"
 async function loadTodos() {
   const client = await mongodb.MongoClient.connect(
-    "mongodb://localhost:27017",
+    `mongodb+srv://${USERNAME}:${PASSWORD}@cluster0.kz9x7.mongodb.net/${DB_NAME}?retryWrites=true&w=majority`,
+    // "mongodb://localhost:27017",
     { useNewUrlParser: true }
   )
   return client.db("fullstack-todo").collection("todos")
