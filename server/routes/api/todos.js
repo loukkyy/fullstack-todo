@@ -32,7 +32,7 @@ async function loadTodos() {
   const client = await mongodb.MongoClient.connect(
     `mongodb+srv://${USERNAME}:${PASSWORD}@cluster0.kz9x7.mongodb.net/${DB_NAME}?retryWrites=true&w=majority`,
     // "mongodb://localhost:27017",
-    { useNewUrlParser: true }
+    { useNewUrlParser: true, useUnifiedTopology: true }
   )
   return client.db("fullstack-todo").collection("todos")
 }
