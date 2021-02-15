@@ -6,11 +6,12 @@
   "scripts": {
     "start": "node server/app.js",
     "dev": "nodemon server/app.js",
-    "postinstall": "if test \"$NODE_ENV\" = \"production\" ; then npm run build --prefix ../client ; fi "
+    "postinstall": "if test \"$NODE_ENV\" = \"production\" ; then npm run build --prefix client ; fi "
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@vue/cli-service": "^4.5.11",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "mongodb": "^3.6.4"
