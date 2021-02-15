@@ -1,15 +1,16 @@
 <template>
   <div class="hello">
-    <h1>Todos</h1>
-    <form action="" method="post" @submit.prevent="submitTodo">
+    <h1>Fullstack - MEVN - Awesome Todo ✅ </h1>
+    <form action="" method="post" @submit.prevent="submitTodo" class="todo-form">
       <input
         type="text"
         name="text-input"
         id="text-input"
         placeholder="Create a task"
         v-model="text"
+        class="input"
       />
-      <button type="submit" :disabled="text===''">Create</button>
+      <button type="submit" :disabled="text===''" class="btn">Add</button>
     </form>
     <p class="error" v-if="error" {{ error }}></p>
     <div class="todos">
@@ -17,7 +18,7 @@
         v-for="todo in todos"
         :key="todo._id"
         :todo="todo"
-        @dblclick="deleteTodo(todo._id)"
+        @deleteMe="deleteTodo(todo._id)"
       />
     </div>
   </div>
@@ -102,5 +103,11 @@ a {
 .todos > .todo {
   margin: 5px 0px;
   width: 80vw;
+}
+.todo-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
 }
 </style>

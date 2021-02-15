@@ -27,4 +27,29 @@
 #nav a.router-link-exact-active {
   color: #42b983;
 }
+.input {
+    border: 1px solid #AAA;
+    outline: none;
+    font-family: inherit;
+    font-size: inherit;
+    padding: .5em;
+    border-radius: .2em;
+}
+.input:focus {
+    border-color: hsl(200, 100%, 50%);
+    box-shadow: 0 0 5px hsl(200, 100%, 50%);
+}
+.btn {
+  outline: none;
+  border: 1px solid hsl(200, 100%, 50%);
+  padding: 0.5em 1em;
+  cursor: pointer;
+  text-align: center;
+  border-radius: 0.3em;
+  font: inherit;
+}
+.btn:hover,
+.btn:focus {
+  box-shadow: 0 0 5px hsl(200, 100%, 50%);
+}
 </style>
