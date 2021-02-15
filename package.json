@@ -4,9 +4,9 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js",
-    "dev": "nodemon app.js",
-    "postinstall": "if test \"$NODE_ENV\" = \"production\" ; then npm run build --prefix ./client ; fi "
+    "start": "node server/app.js",
+    "dev": "nodemon server/app.js",
+    "postinstall": "if test \"$NODE_ENV\" = \"production\" ; then npm run build --prefix ../client ; fi "
   },
   "author": "",
   "license": "ISC",
