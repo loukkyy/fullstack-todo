@@ -1,33 +1,34 @@
 <template>
   <div class="hello">
+    <form
+      action=""
+      method="post"
+      @submit.prevent="submitTodo"
+      class="todo-form"
+    >
+      <input
+        type="text"
+        name="text-input"
+        id="text-input"
+        placeholder="Create a task"
+        v-model="text"
+        class="input"
+      />
+      <button type="submit" :disabled="text === '' || loading" class="btn">
+        Add
+      </button>
+    <button class="btn" @click.prevent="fetchTodos">Refresh</button>
+    </form>
 
+    <p class="error" v-if="error">{{ error }}</p>
     <Spinner v-if="loading" />
-    <div class="container" v-else>
-      <form
-        action=""
-        method="post"
-        @submit.prevent="submitTodo"
-        class="todo-form"
-      >
-        <input
-          type="text"
-          name="text-input"
-          id="text-input"
-          placeholder="Create a task"
-          v-model="text"
-          class="input"
-        />
-        <button type="submit" :disabled="text === ''" class="btn">Add</button>
-      </form>
-      <p class="error" v-if="error" {{ error }}></p>
-      <div class="todos">
-        <Todo
-          v-for="todo in todos"
-          :key="todo._id"
-          :todo="todo"
-          @deleteMe="deleteTodo(todo._id)"
-        />
-      </div>
+    <div class="todos" v-else>
+      <Todo
+        v-for="todo in todos"
+        :key="todo._id"
+        :todo="todo"
+        @deleteMe="deleteTodo(todo._id)"
+      />
     </div>
   </div>
 </template>
@@ -53,6 +54,7 @@ export default {
   methods: {
     fetchTodos() {
       this.loading = true
+      this.error = ""
       getTodos()
         .then((response) => response.data)
         .then((data) =>
@@ -127,5 +129,6 @@ a {
   justify-content: center;
   align-items: center;
   gap: 10px;
+  margin: 20px 0px;
 }
 </style>
