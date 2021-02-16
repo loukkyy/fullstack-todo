@@ -1,5 +1,6 @@
 const express = require("express")
 const mongodb = require("mongodb")
+require('dotenv').config()
 const router = express.Router()
 
 // get todos
@@ -25,12 +26,13 @@ router.delete("/:id", async (request, response) => {
   response.status(200).send("deleted")
 })
 
-const USERNAME = "user"
-const PASSWORD = "pass1234"
-const DB_NAME = "fullstack-todo-db"
+const USERNAME = process.env.DB_USER
+const PASSWORD = process.env.DB_PASS
+const DB_NAME = process.env.DB_NAME
+const DB_HOST = process.env.DB_HOST
 async function loadTodos() {
   const client = await mongodb.MongoClient.connect(
-    `mongodb+srv://${USERNAME}:${PASSWORD}@cluster0.kz9x7.mongodb.net/${DB_NAME}?retryWrites=true&w=majority`,
+    `mongodb+srv://${USERNAME}:${PASSWORD}@${DB_HOST}/${DB_NAME}?retryWrites=true&w=majority`,
     // "mongodb://localhost:27017",
     { useNewUrlParser: true, useUnifiedTopology: true }
   )
