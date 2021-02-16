@@ -1,25 +1,33 @@
 <template>
   <div class="hello">
-    <h1>Fullstack - MEVN - Awesome Todo ✅ </h1>
-    <form action="" method="post" @submit.prevent="submitTodo" class="todo-form">
-      <input
-        type="text"
-        name="text-input"
-        id="text-input"
-        placeholder="Create a task"
-        v-model="text"
-        class="input"
-      />
-      <button type="submit" :disabled="text===''" class="btn">Add</button>
-    </form>
-    <p class="error" v-if="error" {{ error }}></p>
-    <div class="todos">
-      <Todo
-        v-for="todo in todos"
-        :key="todo._id"
-        :todo="todo"
-        @deleteMe="deleteTodo(todo._id)"
-      />
+
+    <Spinner v-if="loading" />
+    <div class="container" v-else>
+      <form
+        action=""
+        method="post"
+        @submit.prevent="submitTodo"
+        class="todo-form"
+      >
+        <input
+          type="text"
+          name="text-input"
+          id="text-input"
+          placeholder="Create a task"
+          v-model="text"
+          class="input"
+        />
+        <button type="submit" :disabled="text === ''" class="btn">Add</button>
+      </form>
+      <p class="error" v-if="error" {{ error }}></p>
+      <div class="todos">
+        <Todo
+          v-for="todo in todos"
+          :key="todo._id"
+          :todo="todo"
+          @deleteMe="deleteTodo(todo._id)"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -27,20 +35,24 @@
 <script>
 import { getTodos, addTodo, deleteTodo } from "@/services/todos-service.js"
 import Todo from "@/components/Todo.vue"
+import Spinner from "@/components/Spinner.vue"
 export default {
   name: "Todos",
   components: {
     Todo,
+    Spinner,
   },
   data() {
     return {
       todos: [],
       error: "",
       text: "",
+      loading: false,
     }
   },
   methods: {
     fetchTodos() {
+      this.loading = true
       getTodos()
         .then((response) => response.data)
         .then((data) =>
@@ -49,15 +61,21 @@ export default {
             createdAt: new Date(todo.createdAt),
           }))
         )
-        .then((todos) => (this.todos = todos))
-        .catch((err) => (this.error = err.message))
+        .then((todos) => {
+          this.todos = todos
+          this.loading = false
+        })
+        .catch((err) => {
+          this.error = err.message
+          this.loading = false
+        })
     },
     submitTodo() {
       addTodo(this.text)
         .then((response) => {
           if (response.status === 201) {
             console.log(`${this.text} has been submited`)
-            this.text = ''
+            this.text = ""
             this.fetchTodos()
           }
         })
