@@ -1,16 +1,17 @@
 const express = require("express")
+const router = express.Router()
 const mongodb = require("mongodb")
 const MongodbService = require("../../services/MongodbService.js")
-const router = express.Router()
+const { verifyToken } = require('../../services/AuthService')
 
 // get todos
-router.get("/", async (request, response) => {
+router.get("/", verifyToken, async (request, response) => {
   const posts = await loadTodos()
-  response.send(await posts.find({}).toArray())
+  response.json(await posts.find({}).toArray())
 })
 
 // post todo
-router.post("/", async (request, response) => {
+router.post("/", verifyToken, async (request, response) => {
   const todos = await loadTodos()
   await todos.insertOne({
     text: request.body.text,
@@ -20,7 +21,7 @@ router.post("/", async (request, response) => {
 })
 
 // delete todo
-router.delete("/:id", async (request, response) => {
+router.delete("/:id", verifyToken, async (request, response) => {
   const todos = await loadTodos()
   await todos.deleteOne({ _id: new mongodb.ObjectID(request.params.id) })
   response.status(200).send("deleted")

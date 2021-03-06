@@ -1,0 +1,41 @@
+@hostname = localhost
+@port = 4000
+@host = {{hostname}}:{{port}}
+@createdAt = {{$datetime iso8601}}
+@modifiedBy = {{$processEnv USERNAME}}
+
+POST http://{{host}}/token
+content-type: application/json
+
+{
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpvaG4uZG9lQHRlc3QuY29tIiwiaWF0IjoxNjE1MDQ1Njk5fQ.bEfIOSlHLPPOYA3DmhjZkRHuCBI5mn-EFnR0070SbKU"
+}
+
+###
+
+POST http://{{host}}/login
+content-type: application/json
+
+{
+    "email": "john.doe@test.com",
+    "password": "pass"
+}
+
+###
+
+POST http://{{host}}/logout
+content-type: application/json
+
+{
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpvaG4uZG9lQHRlc3QuY29tIiwiaWF0IjoxNjE0OTAyNDk0fQ.mifVi9exzmnQc2E9qHOFTFE1_nEUC88kC11eqndY21E"
+}
+
+###
+
+POST http://{{host}}/register
+content-type: application/json
+
+{
+    "email": "john.doe@test.com",
+    "password": "pass"
+}

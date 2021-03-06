@@ -14,14 +14,14 @@
         v-model="text"
         class="input"
       />
-      <button type="submit" :disabled="text === '' || loading" class="btn">
+      <button type="submit" :disabled="text === '' || isLoading" class="btn">
         Add
       </button>
-    <button class="btn" @click.prevent="fetchTodos">Refresh</button>
+      <button class="btn" @click.prevent="fetchTodos">Refresh</button>
     </form>
 
     <p class="error" v-if="error">{{ error }}</p>
-    <Spinner v-if="loading" />
+    <Spinner v-if="isLoading" />
     <div class="todos" v-else>
       <Todo
         v-for="todo in todos"
@@ -34,67 +34,69 @@
 </template>
 
 <script>
-import { getTodos, addTodo, deleteTodo } from "@/services/todos-service.js"
 import Todo from "@/components/Todo.vue"
 import Spinner from "@/components/Spinner.vue"
+
 export default {
-  name: "Todos",
+  name: "TodosList",
   components: {
     Todo,
-    Spinner,
+    Spinner
   },
   data() {
     return {
       todos: [],
       error: "",
       text: "",
-      loading: false,
+      isLoading: false
     }
   },
   methods: {
     fetchTodos() {
-      this.loading = true
+      this.isLoading = true
       this.error = ""
-      getTodos()
-        .then((response) => response.data)
-        .then((data) =>
-          data.map((todo) => ({
+      this.$store
+        .dispatch("getTodos")
+        .then(({ data }) => data)
+        .then(data =>
+          data.map(todo => ({
             ...todo,
-            createdAt: new Date(todo.createdAt),
+            createdAt: new Date(todo.createdAt)
           }))
         )
-        .then((todos) => {
+        .then(todos => {
           this.todos = todos
-          this.loading = false
+          this.isLoading = false
         })
-        .catch((err) => {
+        .catch(err => {
           this.error = err.message
-          this.loading = false
+          this.isLoading = false
         })
     },
     submitTodo() {
-      addTodo(this.text)
-        .then((response) => {
+      this.$store
+        .dispatch("addTodo")
+        .then(response => {
           if (response.status === 201) {
             console.log(`${this.text} has been submited`)
             this.text = ""
             this.fetchTodos()
           }
         })
-        .catch((err) => (this.error = err.message))
+        .catch(err => (this.error = err.message))
     },
     deleteTodo(id) {
-      deleteTodo(id).then((response) => {
+      this.$store.dispatch("register", { id }).then(response => {
         if (response.status === 200) {
           console.log(`Task ${id} has been deleted`)
           this.fetchTodos()
         }
       })
-    },
+    }
   },
   created() {
     this.fetchTodos()
-  },
+  }
 }
 </script>
 

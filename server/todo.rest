@@ -1,0 +1,21 @@
+@hostname = localhost
+@port = 5000
+@host = {{hostname}}:{{port}}
+@createdAt = {{$datetime iso8601}}
+@modifiedBy = {{$processEnv USERNAME}}
+
+GET http://{{host}}/api/todos
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpvaG4uZG9lQHRlc3QuY29tIiwiaWF0IjoxNjE0OTAyNjM4LCJleHAiOjE2MTQ5MDI2NTN9.5_Bo9ZInX1DFllRbf4hFQj0JP87v4KUVIhus278MVIU
+
+###
+
+POST http://{{host}}/api/todos
+Content-type: application/json
+
+{
+    "text": "new todo from api"
+}
+
+###
+
+DELETE http://{{host}}/api/todos/602c4c2bbcf06d785ae78a5e∏

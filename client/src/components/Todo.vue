@@ -17,6 +17,9 @@ export default {
     todo: {
       type: Object,
       required: true,
+      default: () => {
+        return {}
+      }
     },
   },
 }

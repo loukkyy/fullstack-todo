@@ -1,19 +1,38 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
+  <div class="home-container">
+    <div class="logo">
+      <img alt="Vue logo" src="../assets/logo.png" />
+    </div>
     <h1>Fullstack - MEVN - Awesome Todo ✅</h1>
-    <Todos />
+    <div v-if="!isLoggedIn">
+      To use this app you'll need to
+      <router-link :to="{ name: 'login' }">
+        Login
+      </router-link>
+      or
+      <router-link :to="{ name: 'register' }">
+        Register
+      </router-link>
+    </div>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import Todos from "@/components/Todos.vue"
-
+import { mapGetters } from "vuex"
 export default {
-  name: "Home",
-  components: {
-    Todos,
-  },
+  name: "home",
+  components: {},
+  computed: {
+    ...mapGetters(["isLoggedIn"])
+  }
 }
 </script>
+
+<style scoped>
+.home-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  min-height: 100vh;
+}
+</style>
