@@ -2,7 +2,7 @@ import axios from "axios"
 import store from "./store"
 
 const authClient = axios.create({
-  baseURL: "//localhost:4000",
+  baseURL: process.env.VUE_APP_AUTH_SERVICE_URL || "/",
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json"
