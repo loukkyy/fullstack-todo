@@ -5,20 +5,11 @@ module.exports = {
   devServer: {
     proxy: {
       "/api": {
-        target: "http://localhost:5000",
+        target: "http://localhost:5000"
       },
-      "/login": {
-        target: "http://localhost:4000",
-      },
-      "/logout": {
-        target: "http://localhost:4000",
-      },
-      "/token": {
-        target: "http://localhost:4000",
-      },
-      "/register": {
-        target: "http://localhost:4000",
+      "/auth": {
+        target: "http://localhost:4000"
       }
-    },
-  },
+    }
+  }
 }

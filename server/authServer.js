@@ -10,7 +10,7 @@ app.use(cors())
 // access form attributes from client
 app.use(express.urlencoded({ extended: false }))
 
-app.use("/", require("./routes/api/auth"))
+app.use("/auth", require("./routes/api/auth"))
 
 const port = process.env.PORT || 4000
 
