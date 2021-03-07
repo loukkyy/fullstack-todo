@@ -4,7 +4,9 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "node server/server.js && node server/authServer.js",
+    "todoService": "node server/server.js",
+    "authService": "node server/authServer.js",
+    "start": "concurrently \"npm run todoService\" \"npm run authService\"",
     "dev": "nodemon server/server.js",
     "devAuth": "nodemon server/authServer.js",
     "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build && cd .."
@@ -13,6 +15,7 @@
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.0.0",
+    "concurrently": "^6.0.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
