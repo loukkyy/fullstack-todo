@@ -1,5 +1,5 @@
 <template>
-  <div class="todo" v-if="todo">
+  <div class="card todo" v-if="todo">
     <div class="content">
     <h4>{{ todo.text }}</h4>
     <p>Created at: {{ `${todo.createdAt.getDate()}/${todo.createdAt.getMonth()}/${todo.createdAt.getFullYear()}` }}</p>
@@ -27,7 +27,6 @@ export default {
 
 <style>
 .todo {
-  border: solid 1px coral;
   user-select: none;
   display: flex;
 }
@@ -43,7 +42,7 @@ export default {
   text-align: center;
   font: inherit;
   font-size: 3rem;
-  background-color: coral;
+  background-color: #8ac4ff;
 }
 .delete-btn:hover,
 .delete-btn:focus {

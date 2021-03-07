@@ -29,10 +29,7 @@ export default {
 
 <style>
 #nav {
-}
-#nav {
   display: flex;
-  background-color: rgb(25, 147, 253);
   justify-content: space-between;
   align-items: center;
   padding: 15px;
@@ -46,6 +43,6 @@ export default {
 }
 
 #nav a.router-link-exact-active {
-  color: #42b983;
+  color: hsl(210, 100%, 47%);
 }
 </style>

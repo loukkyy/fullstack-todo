@@ -33,6 +33,6 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  min-height: 100vh;
+  align-items: center;
 }
 </style>

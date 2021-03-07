@@ -75,10 +75,9 @@ export default {
     },
     submitTodo() {
       this.$store
-        .dispatch("addTodo")
+        .dispatch("addTodo", this.text)
         .then(response => {
           if (response.status === 201) {
-            console.log(`${this.text} has been submited`)
             this.text = ""
             this.fetchTodos()
           }
@@ -86,9 +85,8 @@ export default {
         .catch(err => (this.error = err.message))
     },
     deleteTodo(id) {
-      this.$store.dispatch("register", { id }).then(response => {
+      this.$store.dispatch("deleteTodo", id).then(response => {
         if (response.status === 200) {
-          console.log(`Task ${id} has been deleted`)
           this.fetchTodos()
         }
       })
@@ -121,6 +119,7 @@ a {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding: 1rem;
 }
 .todos > .todo {
   margin: 5px 0px;

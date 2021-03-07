@@ -31,10 +31,8 @@ export default createStore({
     register({ commit }, credentials) {
       return authClient
         .post("/register", credentials)
-        .then(({ data }) => console.log(data))
     },
     login({ commit }, credentials) {
-      console.log(credentials)
       return authClient
         .post("/login", credentials)
         .then(({ data }) => commit("SET_USER_DATA", data))

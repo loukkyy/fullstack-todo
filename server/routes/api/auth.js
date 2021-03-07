@@ -9,6 +9,7 @@ const {
 } = require("../../services/AuthService")
 const jwt = require("jsonwebtoken")
 
+// test data
 const users = [
   {
     id: "1615052252528",
@@ -22,15 +23,27 @@ let refreshTokens = []
 // refresh token
 router.post("/token", async (req, res) => {
   const { refreshToken } = req.body
-  if (refreshToken == null) return res.sendStatus(401)
+  if (refreshToken == null)
+    return res
+      .status(401)
+      .json({ error: "No refresh token present in header." })
 
-  if (!refreshTokens.includes(refreshToken)) return res.sendStatus(401)
+  if (!refreshTokens.includes(refreshToken))
+    return res.status(401).json({ error: "Refresh token not valid." })
 
   // verify refresh token
   jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
-    if (err) return res.sendStatus(401)
+    if (err) { // not valid
+      // remove refresh token
+      refreshTokens = refreshTokens.filter(
+        (token) => token != refreshToken
+      )
+      
+      // return not valid
+      return res.status(401).json({ error: "Refresh token not valid." })
+    }
     const accessToken = generateAccessToken({ email: user.email })
-    res.json({ accessToken })
+    return res.json({ accessToken })
   })
 })
 
@@ -40,24 +53,26 @@ router.post("/login", async (req, res) => {
 
   // check user exists
   const user = users.find((user) => user.email === email)
-  if (!user) {
-    res.status(401).json({ error: "Invalid login. Please try again." })
-    return
+  if (user == null) {
+    return res.status(401).json({ error: "Invalid login. Please try again." })
   }
-
-  // verify password
-  if (await !bcrypt.compare(password, user.password)) {
-    res.status(401).json({ error: "Invalid login. Please try again." })
+  try {
+    // verify password
+    if (await bcrypt.compare(password, user.password)) {
+      // if success => create tokens
+      const accessToken = generateAccessToken({ email })
+      const refreshToken = generateRefreshToken({ email })
+      refreshTokens.push(refreshToken)
+      
+      console.log(`Account ${email} logged in`)
+      return res.status(200).json({ accessToken, refreshToken })
+    } else {
+      // if fail =>
+      return res.status(401).json({ error: "Invalid login. Please try again." })
+    }
+  } catch (error) {
+    return res.status(500).send()
   }
-
-  // create tokens
-  const accessToken = generateAccessToken({ email })
-  const refreshToken = generateRefreshToken({ email })
-  refreshTokens.push(refreshToken)
-
-  console.log(`${email} has logged in`)
-  console.log(refreshTokens)
-  res.status(200).json({ accessToken, refreshToken })
 })
 
 // logout
@@ -65,7 +80,6 @@ router.post("/logout", async (req, res) => {
   refreshTokens = refreshTokens.filter(
     (token) => token != req.body.refreshToken
   )
-  console.log(refreshTokens)
   res.sendStatus(204)
 })
 
@@ -74,15 +88,11 @@ router.post("/register", async (req, res) => {
   try {
     const { email, password } = req.body
 
+    // check if email and password are not null
     if (!email || !password) {
-      console.log({
-        error: "Email or password not provided. Cannot register user.",
-      })
-      res
-        .sendStatus(400)
-        .send({
-          error: "Email or password not provided. Cannot register user.",
-        })
+      const message = "Email or password not provided. Cannot register user."
+      console.log(message)
+      res.sendStatus(400).send({ error: message })
     }
 
     // check if email already exists
@@ -94,22 +104,23 @@ router.post("/register", async (req, res) => {
       return
     }
 
-    const hashPassword = await bcrypt.hash(req.body.password, 10)
-    console.log(hashPassword)
+    // generate hashed password
+    const hashedPassword = await bcrypt.hash(req.body.password, 10)
+
     // save user
     users.push({
       id: Date.now().toString(),
       email: req.body.email,
-      password: hashPassword,
+      password: hashedPassword,
     })
+
     // send response
-    const message = `${req.body.email} has signed up`
+    const message = `Acccount for ${req.body.email} created with success.`
     console.log(message)
     res.status(201).send(message)
   } catch {
     console.log("An error occured during registering")
   }
-  console.log(users)
 })
 
 module.exports = router
