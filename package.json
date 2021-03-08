@@ -6,7 +6,7 @@
   "scripts": {
     "todoService": "node server/server.js",
     "authService": "node server/authServer.js",
-    "start": "concurrently \"npm run todoService\" \"npm run authService\"",
+    "start": "npm run todoService",
     "dev": "nodemon server/server.js",
     "devAuth": "nodemon server/authServer.js",
     "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build && cd .."
