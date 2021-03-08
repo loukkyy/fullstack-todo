@@ -33,12 +33,11 @@ router.post("/token", async (req, res) => {
 
   // verify refresh token
   jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
-    if (err) { // not valid
+    if (err) {
+      // not valid
       // remove refresh token
-      refreshTokens = refreshTokens.filter(
-        (token) => token != refreshToken
-      )
-      
+      refreshTokens = refreshTokens.filter((token) => token != refreshToken)
+
       // return not valid
       return res.status(401).json({ error: "Refresh token not valid." })
     }
@@ -63,7 +62,7 @@ router.post("/login", async (req, res) => {
       const accessToken = generateAccessToken({ email })
       const refreshToken = generateRefreshToken({ email })
       refreshTokens.push(refreshToken)
-      
+
       console.log(`Account ${email} logged in`)
       return res.status(200).json({ accessToken, refreshToken })
     } else {
@@ -71,7 +70,7 @@ router.post("/login", async (req, res) => {
       return res.status(401).json({ error: "Invalid login. Please try again." })
     }
   } catch (error) {
-    return res.status(500).send()
+    return res.status(500).send(error)
   }
 })
 
