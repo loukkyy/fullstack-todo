@@ -49,10 +49,9 @@ router.post("/token", async (req, res) => {
 // login
 router.post("/login", async (req, res) => {
   const { email, password } = req.body
-  console.log(email, password)
+
   // check user exists
   const user = users.find((user) => user.email === email)
-  console.log(user)
   if (user == null) {
     return res.status(401).json({ error: "Invalid login. Please try again." })
   }
@@ -61,9 +60,7 @@ router.post("/login", async (req, res) => {
     if (await bcrypt.compare(password, user.password)) {
       // if success => create tokens
       const accessToken = generateAccessToken({ email })
-      console.log(accessToken)
       const refreshToken = generateRefreshToken({ email })
-      console.log(refreshToken)
       refreshTokens.push(refreshToken)
 
       console.log(`Account ${email} logged in`)

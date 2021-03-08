@@ -3,8 +3,9 @@
     <div class="logo">
       <img alt="Vue logo" src="../assets/logo.png" />
     </div>
-    <h1>Fullstack - MEVN - Awesome Todo ✅</h1>
-    <div v-if="!isLoggedIn">
+    <h1>Fullstack - MEVN</h1>
+    <h2>Awesome Todo ✅</h2>
+    <div v-if="!isLoggedIn" class="margin-bottom">
       To use this app you'll need to
       <router-link :to="{ name: 'login' }">
         Login
@@ -32,7 +33,10 @@ export default {
 .home-container {
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
+}
+.margin-bottom {
+  margin: 2rem;
 }
 </style>

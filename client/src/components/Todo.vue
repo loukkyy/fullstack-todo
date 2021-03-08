@@ -1,16 +1,22 @@
 <template>
   <div class="card todo" v-if="todo">
     <div class="content">
-    <h4>{{ todo.text }}</h4>
-    <p>Created at: {{ `${todo.createdAt.getDate()}/${todo.createdAt.getMonth()}/${todo.createdAt.getFullYear()}` }}</p>
-
+      <h2>{{ todo.text }}</h2>
+      <p>
+        Created at:
+        {{
+          formattedDate
+        }}
+      </p>
     </div>
-    <button class="delete-btn" 
-        @click="$emit('deleteMe', {id: todo._id})">X</button>
+    <button class="delete-btn" @click="$emit('deleteMe', { id: todo._id })">
+      <i class="far fa-trash-alt"></i>
+    </button>
   </div>
 </template>
 
 <script>
+import { format } from "date-fns"
 export default {
   name: "Todo",
   props: {
@@ -20,8 +26,13 @@ export default {
       default: () => {
         return {}
       }
-    },
+    }
   },
+  computed: {
+    formattedDate() {
+      return format(this.todo.createdAt, "dd/MM/yyyy hh:mm:ss")
+    }
+  }
 }
 </script>
 
@@ -31,7 +42,7 @@ export default {
   display: flex;
 }
 .content {
-  padding: 0.5em;
+  padding: 0.8em;
   flex: 9;
 }
 .delete-btn {
@@ -41,13 +52,13 @@ export default {
   cursor: pointer;
   text-align: center;
   font: inherit;
-  font-size: 3rem;
+  font-size: 2rem;
   background-color: #8ac4ff;
+  padding: 0.8rem;
 }
 .delete-btn:hover,
 .delete-btn:focus {
   cursor: pointer;
-  background-color: hsl(16, 100%,46%);
-
+  background-color: hsl(16, 100%, 46%);
 }
 </style>
