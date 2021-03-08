@@ -16,6 +16,8 @@ if (process.env.NODE_ENV === "production") {
 
 app.use("/api/todos", require("./routes/api/todos"))
 
+app.use("/auth", require("./routes/api/auth"))
+
 // send index.html for all other routes
 app.get(/.*/, (request, response) =>
   response.sendFile(`${__dirname}/public/index.html`)
