@@ -1,6 +1,6 @@
 @hostname = localhost
 @port = 4000
-@host = {{hostname}}:{{port}}
+@host = {{hostname}}:{{port}}/auth
 @createdAt = {{$datetime iso8601}}
 @modifiedBy = {{$processEnv USERNAME}}
 
@@ -8,7 +8,7 @@ POST http://{{host}}/token
 content-type: application/json
 
 {
-    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpvaG4uZG9lQHRlc3QuY29tIiwiaWF0IjoxNjE1MDQ1Njk5fQ.bEfIOSlHLPPOYA3DmhjZkRHuCBI5mn-EFnR0070SbKU"
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpvaG4uZG9lQHRlc3QuY29tIiwiaWF0IjoxNjE2MTg1MTkwLCJleHAiOjE2MTYyNzE1OTB9.14QH9XyrqejnQmxug9oK9wXV7FSj8ze_EBQ-bTsZNqY"
 }
 
 ###

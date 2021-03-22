@@ -6,8 +6,9 @@ const MongodbService = require("../../services/MongodbService.js")
 const {
   generateAccessToken,
   generateRefreshToken,
+  verifyRefreshToken,
+  refreshTokens,
 } = require("../../services/AuthService")
-const jwt = require("jsonwebtoken")
 
 // test data
 const users = [
@@ -18,32 +19,10 @@ const users = [
   },
 ]
 
-let refreshTokens = []
-
 // refresh token
-router.post("/token", async (req, res) => {
-  const { refreshToken } = req.body
-  if (refreshToken == null)
-    return res
-      .status(401)
-      .json({ error: "No refresh token present in header." })
-
-  if (!refreshTokens.includes(refreshToken))
-    return res.status(401).json({ error: "Refresh token not valid." })
-
-  // verify refresh token
-  jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
-    if (err) {
-      // not valid
-      // remove refresh token
-      refreshTokens = refreshTokens.filter((token) => token != refreshToken)
-
-      // return not valid
-      return res.status(401).json({ error: "Refresh token not valid." })
-    }
-    const accessToken = generateAccessToken({ email: user.email })
-    return res.json({ accessToken })
-  })
+router.post("/token", verifyRefreshToken, async (req, res) => {
+  const accessToken = generateAccessToken({ email: req.user.email })
+  return res.json({ accessToken })
 })
 
 // login

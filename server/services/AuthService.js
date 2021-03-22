@@ -1,5 +1,7 @@
 const jwt = require("jsonwebtoken")
 
+let refreshTokens = []
+
 function generateAccessToken(user) {
   return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
     expiresIn: process.env.ACCESS_TOKEN_VALIDITY,
@@ -11,7 +13,7 @@ function generateRefreshToken(user) {
   })
 }
 
-function verifyToken(req, res, next) {
+function verifyAccessToken(req, res, next) {
   const authHeader = req.headers["authorization"]
   const token = authHeader && authHeader.split(" ")[1]
 
@@ -26,6 +28,32 @@ function verifyToken(req, res, next) {
   })
 }
 
+function verifyRefreshToken(req, res, next) {
+  const { refreshToken } = req.body
+
+  if (refreshToken == null)
+    return res
+      .status(401)
+      .json({ error: "No refresh token present in header." })
+
+  if (!refreshTokens.includes(refreshToken))
+    return res.status(401).json({ error: "Refresh token not valid." })
+
+  // verify refresh token
+  jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
+    if (err) {
+      // not valid
+      // remove refresh token
+      refreshTokens = refreshTokens.filter((token) => token != refreshToken)
+
+      // return not valid
+      return res.status(401).json({ error: "Refresh token not valid." })
+    }
+    req.user = user
+  })
+  next()
+}
+
 function getTokenPayload(req) {
   const authHeader = req.headers["authorization"]
   const token = authHeader && authHeader.split(" ")[1]
@@ -35,6 +63,8 @@ function getTokenPayload(req) {
 module.exports = {
   generateAccessToken,
   generateRefreshToken,
-  verifyToken,
+  verifyAccessToken,
+  verifyRefreshToken,
   getTokenPayload,
+  refreshTokens,
 }

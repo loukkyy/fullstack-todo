@@ -2,10 +2,13 @@ const express = require("express")
 const router = express.Router()
 const mongodb = require("mongodb")
 const MongodbService = require("../../services/MongodbService.js")
-const { verifyToken, getTokenPayload } = require("../../services/AuthService")
+const {
+  verifyAccessToken,
+  getTokenPayload,
+} = require("../../services/AuthService")
 
 // get todos
-router.get("/", verifyToken, async (req, res) => {
+router.get("/", verifyAccessToken, async (req, res) => {
   // get token payload from request
   const { email } = getTokenPayload(req)
 
@@ -17,7 +20,7 @@ router.get("/", verifyToken, async (req, res) => {
 })
 
 // post todo
-router.post("/", verifyToken, async (req, res) => {
+router.post("/", verifyAccessToken, async (req, res) => {
   // get payload
   const { text } = req.body
 
@@ -36,7 +39,7 @@ router.post("/", verifyToken, async (req, res) => {
 })
 
 // delete todo
-router.delete("/:id", verifyToken, async (req, res) => {
+router.delete("/:id", verifyAccessToken, async (req, res) => {
   const todos = await loadTodos()
   await todos.deleteOne({ _id: new mongodb.ObjectID(req.params.id) })
   res.status(200).send("deleted")
