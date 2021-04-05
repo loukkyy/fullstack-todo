@@ -7,14 +7,16 @@ const {
   generateAccessToken,
   generateRefreshToken,
   verifyRefreshToken,
-  refreshTokens,
 } = require("../../services/AuthService")
+
+let { refreshTokens } = require("../../services/AuthService")
 
 // test data
 const users = [
   {
     id: "1615052252528",
     email: "sponge.bob@ocean.com",
+    // password: 1
     password: "$2b$10$N6TrTnihOy.luzvn5lU6oeDxbzg8uOSQTNmQw84Wz.8QDP8GHRsdW",
   },
 ]

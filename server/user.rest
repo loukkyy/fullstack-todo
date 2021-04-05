@@ -3,12 +3,13 @@
 @host = {{hostname}}:{{port}}/auth
 @createdAt = {{$datetime iso8601}}
 @modifiedBy = {{$processEnv USERNAME}}
+@refreshToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpvaG4uZG9lQHRlc3QuY29tIiwiaWF0IjoxNjE2MTg1MTkwLCJleHAiOjE2MTYyNzE1OTB9.14QH9XyrqejnQmxug9oK9wXV7FSj8ze_EBQ-bTsZNqY"
 
 POST http://{{host}}/token
 content-type: application/json
 
 {
-    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpvaG4uZG9lQHRlc3QuY29tIiwiaWF0IjoxNjE2MTg1MTkwLCJleHAiOjE2MTYyNzE1OTB9.14QH9XyrqejnQmxug9oK9wXV7FSj8ze_EBQ-bTsZNqY"
+    "refreshToken": {{refreshToken}}
 }
 
 ###
@@ -27,7 +28,7 @@ POST http://{{host}}/logout
 content-type: application/json
 
 {
-    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpvaG4uZG9lQHRlc3QuY29tIiwiaWF0IjoxNjE0OTAyNDk0fQ.mifVi9exzmnQc2E9qHOFTFE1_nEUC88kC11eqndY21E"
+    "refreshToken": {{refreshToken}}
 }
 
 ###
